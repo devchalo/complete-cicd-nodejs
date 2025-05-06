@@ -19,11 +19,11 @@ jobs:
       
       #Set up NodeJS
       - name: Set up NodeJS
-        uses: actions/setup-nodev@v3
+        uses: actions/setup-node@v3
         with:
           node-version: '14'
 
       # Install NodeJS dependencies
       - name: Install NodeJS dependencies
-        run: npm install  
+        run: npm install
         
