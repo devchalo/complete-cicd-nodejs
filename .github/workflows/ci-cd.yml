@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
+      # Checkout codee
       - name: Chekout code
         uses: actions/checkout@v3
       
