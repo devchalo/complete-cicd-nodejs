@@ -37,9 +37,9 @@ jobs:
       # Docekr image build
       - name: Build Docker image
         run: |
+          echo "GitHub SHA1: ${{ github.sha }}"
           docker build -t actions-app:${{ github.sha}} .
           docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}:latest
-          docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}:latest
 
       # Trivy Scan
       - name: Trivy Scan
