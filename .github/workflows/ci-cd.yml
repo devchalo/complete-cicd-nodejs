@@ -36,7 +36,10 @@ jobs:
       
       # Docekr image build
       - name: Build Docker image
-        run: docker build -t $GITHUB_SHA .
+        run: |
+          docker build -t actions-app:${{ github.sha}} .
+          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
+          docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
 
       # Trivy Scan
       - name: Trivy Scan
@@ -54,3 +57,12 @@ jobs:
       - name: Log in to Amazon ECR
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
+
+      # Push Docker image to Amazon ECR
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}  
