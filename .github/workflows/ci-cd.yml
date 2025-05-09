@@ -37,13 +37,12 @@ jobs:
       # Docekr image build
       - name: Build Docker image
         run: |
-          echo "GitHub SHA1: ${{ github.sha }}"
           docker build -t actions-app:${{ github.sha}} .
           docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}:latest
 
       # Trivy Scan
       - name: Trivy Scan
-        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image actions-app:${{ github.sha}}
       
       # Set up AWS Credentials
       - name: Set up AWS Credentials
